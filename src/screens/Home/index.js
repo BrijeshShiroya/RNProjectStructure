@@ -1,22 +1,49 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import {
+    View,
+    TouchableOpacity,
+    SafeAreaView,
+    Platform,
+    Text
+} from 'react-native';
+import * as palettes from '../../constants/palettes';
 import styles from './style';
-export default class Homes extends Component {
+import { NavigationBarButton } from '../../component/atoms';
+export default class Home extends Component {
+    static navigationOptions = ({ navigation }) => ({
+        title: 'Home',
+        headerStyle: palettes.navigationBar,
+        headerTitleStyle: palettes.navigationBarTitle,
+        headerRight: <NavigationBarButton title={'right'} onPress={navigation.getParam('rightPress')} />,
+        headerLeft: <NavigationBarButton title={'left'} onPress={navigation.getParam('leftPress')} />,
+    });
+
+    rightPress = () => {
+        alert('right')
+    }
+
+    leftPress = () => {
+        alert('left')
+    }
+
+    componentDidMount() {
+        this.props.navigation.setParams({ rightPress: this.rightPress, leftPress: this.leftPress });
+    }
+
+
     render() {
         return (
-            <View style={styles.container}>
-                <TouchableOpacity
-                    style={{
-                        height: 40,
-                        width: 100,
-                        backgroundColor: 'green'
-                    }} onPress={() => {
-                        this.props.navigation.navigate('Profile')
-                    }}>
-
-                </TouchableOpacity>
-
-            </View>
+            <SafeAreaView style={{ flex: 1 }}>
+                <View style={styles.container}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                            this.props.navigation.navigate('Profile')
+                        }}>
+                        <Text style={styles.text}> Next</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeAreaView>
         );
     }
 }
